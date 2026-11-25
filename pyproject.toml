@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=65", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mvskoke-lemmatizer"
+version = "0.1.0"
+description = "HFST-based Mvskoke morphological analyzer and lemmatizer"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = ["pyhfst==1.4.1"]
+
+[project.scripts]
+mvskoke-analyze = "mvskoke_lemmatizer.analyze:main"
+mvskoke-lemmatize = "mvskoke_lemmatizer.lemmatize:main"
+
+[tool.setuptools]
+packages = ["mvskoke_lemmatizer"]
+package-dir = {mvskoke_lemmatizer = "src"}
+
+[tool.setuptools.package-data]
+mvskoke_lemmatizer = ["analyzer.hfstol"]

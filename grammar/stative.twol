@@ -1,0 +1,39 @@
+! Stative stem endings and derivations, applied after personal prefixes.
+Alphabet
+a a:0 b c d e e:0 e:ē e:ę̄ f g h i j k l m n o o:0 p q r s t u
+v v:a v:ą w x y z
+ē ē:0 ą ę ę̄ į ų ǫ ̄ ̨
+A B C D E F G H I J K L M N O P Q R S T U V W X Y Z Ē
+%  ’ • %- %! %?
+%^StPlain:0 %^StPluralStem:0 %^StDerive:0 %^StLength:0 %^StNasal:0
+%^DativeM %^DativeN %^ReciprocalVowel %^ReciprocalConsonant
+%^PossC %^PossE %^PossLong %^PossVowel %^PossBare %^PossDrop
+%^PossM %^PossN %^PossNSp %^InstrumentConsonant %^InstrumentVowel ;
+
+Definitions
+NoGradeVowel = \ [ e: | v: ] ;
+DerivedEnd = [ a:0 | e:0 | ē:0 | o:0 ] ;
+
+Rules
+
+"Remove the final vowel before a plural stem or derivation"
+e:0 <=> _ [ %^StPluralStem:0 | %^StDerive:0 | %^StLength:0 | %^StNasal:0 ] ;
+"Remove the long final vowel before a plural stem or derivation"
+ē:0 <=> _ [ %^StPluralStem:0 | %^StDerive:0 | %^StLength:0 | %^StNasal:0 ] ;
+"Remove a final a before a derivation"
+a:0 <=> _ [ %^StDerive:0 | %^StLength:0 | %^StNasal:0 ] ;
+"Remove a final o before a derivation"
+o:0 <=> _ [ %^StDerive:0 | %^StLength:0 | %^StNasal:0 ] ;
+
+"Lengthen final e in a plain stative or the last e in a derivation"
+e:ē <=> _ %^StPlain:0 ;
+        _ NoGradeVowel* DerivedEnd %^StLength:0 ;
+
+"Lengthen the last v in a derivation"
+v:a <=> _ NoGradeVowel* DerivedEnd %^StLength:0 ;
+
+"Nasalize the last e in a derivation"
+e:ę̄ <=> _ NoGradeVowel* DerivedEnd %^StNasal:0 ;
+
+"Nasalize the last v in a derivation"
+v:ą <=> _ NoGradeVowel* DerivedEnd %^StNasal:0 ;

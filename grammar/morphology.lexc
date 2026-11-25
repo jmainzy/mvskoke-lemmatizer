@@ -1,0 +1,520 @@
+! Verb continuation classes. Endings reflect the existing lemmatizer;
+! their person and number are not specified where that code did not specify them.
+Multichar_Symbols
++Present +PresentAdverb +Past1 +Past2 +Past3 +Past4 +Past5 +ThirdPlural
++Future +Vhan +VhanAuxiliary +Auxiliary +Imperative +VerbAdverb +VerbEko +Plural
++VerbFormE +VerbFormEt +PastParticiple
++Subject +DirectObject +DefiniteSubject +NumeralBase
++Stative +First +Second +FirstPlural +SecondPlural +Derived
++Patient1S +Patient2 +Patient1P +PatientReflexive +PatientReciprocal
++Dative1S +Dative2 +Dative3 +Dative1P +DativeReciprocal +
++Possessive1S +Possessive2 +Possessive3 +Possessive1P
++Manner +TimeRecent +TimeEarlier
++Negative +Agent1S +Agent2 +Agent3 +Agent1P +Agent2P +Statement +Question
++Instrumental +Comitative1S +Comitative2 +Comitative3 +Comitative1P
++Compare1S +Compare2 +Compare3 +Compare1P
+%^Present %^Past %^PastSimplePlural %^PastSpecialPlural %^Base %^VerbE %^VerbEt %^DropVowel %^DropN
+%^SF1 %^SF2 %^SF3 %^SS1 %^SS2 %^SS3 %^SP1 %^SP2 %^SP3 %^PP3
+%^StPlain %^StPluralStem %^StDerive %^StLength %^StNasal
+%^DativeM %^DativeN %^ReciprocalVowel %^ReciprocalConsonant
+%^PossC %^PossE %^PossLong %^PossVowel %^PossBare %^PossDrop
+%^PossM %^PossN %^PossNSp
+%^InstrumentConsonant %^InstrumentVowel
+ę̄
+
+LEXICON PossessiveRoot
+PossessiveCvMarkers ;
+PossessiveVmMarkers ;
+
+LEXICON PossessiveCvMarkers
++Possessive1S:%^PossCcv PossessiveCvLemma ;
++Possessive2:%^PossCce PossessiveCvLemma ;
++Possessive1P:%^PossCpu PossessiveCvLemma ;
++Possessive3:%^PossCe PossessiveCvLemma ;
++Possessive3:%^PossBare PossessiveCvLemma ;
++Possessive1S:%^PossEcv%^PossDrop PossessiveCvLemma ;
++Possessive2:%^PossEce%^PossDrop PossessiveCvLemma ;
++Possessive1P:%^PossEpu%^PossDrop PossessiveCvLemma ;
++Possessive1S:%^PossLongca%^PossDrop PossessiveCvLemma ;
++Possessive2:%^PossLongcē%^PossDrop PossessiveCvLemma ;
++Possessive1P:%^PossLongpo%^PossDrop PossessiveCvLemma ;
++Possessive1S:%^PossVowelvc PossessiveCvLemma ;
++Possessive2:%^PossVowelec PossessiveCvLemma ;
++Possessive1P:%^PossVowelep PossessiveCvLemma ;
+
+LEXICON PossessiveCvLemma
++: PossessiveCvNouns ;
+
+LEXICON PossessiveVmMarkers
++Possessive1S:%^PossMvm%  PossessiveVmLemma ;
++Possessive2:%^PossMcem%  PossessiveVmLemma ;
++Possessive3:%^PossMem%  PossessiveVmLemma ;
++Possessive1P:%^PossMpum%  PossessiveVmLemma ;
++Possessive1S:%^PossMvm PossessiveBoundLemma ;
++Possessive2:%^PossMcem PossessiveBoundLemma ;
++Possessive3:%^PossMem PossessiveBoundLemma ;
++Possessive1P:%^PossMpum PossessiveBoundLemma ;
++Possessive1S:%^PossNvn PossessiveJoinedLemma ;
++Possessive2:%^PossNcen PossessiveJoinedLemma ;
++Possessive3:%^PossNen PossessiveJoinedLemma ;
++Possessive1P:%^PossNpun PossessiveJoinedLemma ;
++Possessive1S:%^PossNSpvn%  PossessiveProperLemma ;
++Possessive2:%^PossNSpcen%  PossessiveProperLemma ;
++Possessive3:%^PossNSpen%  PossessiveProperLemma ;
++Possessive1P:%^PossNSppun%  PossessiveProperLemma ;
+
+LEXICON PossessiveVmLemma
++: PossessiveVmNouns ;
+LEXICON PossessiveBoundLemma
++: PossessiveBoundNouns ;
+LEXICON PossessiveJoinedLemma
++: PossessiveVmNouns ;
++: PossessiveBoundNouns ;
+LEXICON PossessiveProperLemma
++: PossessiveProperNouns ;
+
+! Person tags precede the lemma; a standalone + separates them from it.
+LEXICON PersonRoot
+PatientMarkers ;
+DativeMarkers ;
+InstrumentalMarkers ;
+ComitativeMarkers ;
+ComparisonMarkers ;
+
+LEXICON InstrumentalMarkers
++Instrumental:%^InstrumentConsonantes InstrumentalVerb ;
++Instrumental:%^InstrumentVowel’s InstrumentalVerb ;
+
+LEXICON InstrumentalVerb
+PersonLemma ;
+PatientMarkers ;
+
+LEXICON ComitativeMarkers
++Comitative1S:avm%  PersonLemma ;
++Comitative2:iecem%  PersonLemma ;
++Comitative3:iem%  PersonLemma ;
++Comitative3:a% em%  PersonLemma ;
++Comitative1P:iepum%  PersonLemma ;
++Comitative1S:a%^DativeNvn PersonLemma ;
++Comitative2:ie%^DativeNcen PersonLemma ;
++Comitative3:i%^DativeNen PersonLemma ;
++Comitative1P:ie%^DativeNpun PersonLemma ;
+
+LEXICON ComparisonMarkers
++Compare1S:’svm%  ComparisonLemma ;
++Compare2:escem%  ComparisonLemma ;
++Compare3:’sem%  ComparisonLemma ;
++Compare1P:espum%  ComparisonLemma ;
++Compare1S:’s%^DativeNvn ComparisonLemma ;
++Compare2:es%^DativeNcen ComparisonLemma ;
++Compare3:’s%^DativeNen ComparisonLemma ;
++Compare1P:es%^DativeNpun ComparisonLemma ;
+
+LEXICON ComparisonLemma
++: ComparisonAdjectives ;
+
+! Irregular present forms of vyetv when instrumental adds a patient.
+LEXICON InstrumentalGo
++Instrumental+Patient1S+vyetv+V+Present:’svcayes # ;
++Instrumental+Patient2+vyetv+V+Present:’secēyes # ;
+
+LEXICON DativeMarkers
++Dative1S:%^DativeMvm%  PatientAfterDative ;
++Dative1S:%^DativeNvn PatientAfterDative ;
++Dative2:%^DativeMcem%  PatientAfterDative ;
++Dative2:%^DativeNcen PatientAfterDative ;
++Dative3:%^DativeMem%  PatientAfterDative ;
++Dative3:%^DativeNen PatientAfterDative ;
++Dative1P:%^DativeMpum%  PatientAfterDative ;
++Dative1P:%^DativeNpun PatientAfterDative ;
++DativeReciprocal:%^DativeMetem%  PatientAfterDative ;
++DativeReciprocal:%^DativeNeten PatientAfterDative ;
+
+LEXICON PatientAfterDative
+PersonLemma ;
+PatientMarkers ;
+
+LEXICON PatientMarkers
++Patient1S:%^SF1%^SF2%^SF3 PatientLemma ;
++Patient2:%^SS1%^SS2%^SS3 PatientLemma ;
++Patient1P:%^SP1%^SP2%^PP3 PatientLemma ;
++PatientReflexive:ē PatientLemma ;
++PatientReciprocal:%^ReciprocalVowelet PatientLemma ;
++PatientReciprocal:%^ReciprocalConsonantete PatientLemma ;
+
+LEXICON PersonLemma
++: PersonVerbs ;
+
+LEXICON PatientLemma
++: PatientVerbs ;
+
+! The patient-marked -ēs forms in the reference can use the ungraded stem.
+LEXICON PatientRegularVerb
+RegularVerb ;
++Present:%^Base PatientEsEnding ;
+
+LEXICON PatientSingularVerb
+SingularVerb ;
++Present:%^Base PatientEsEnding ;
+
+LEXICON PatientPluralVerb
+PluralVerb ;
++Plural+Present:%^Base PatientEsEnding ;
+
+LEXICON PatientEsEnding
+0:ēs # ;
+
+LEXICON Nominal
++Subject:t # ;
++DirectObject:n # ;
+
+LEXICON DefiniteVowel
++DefiniteSubject:%^DropVowel DefiniteEnding ;
+
+LEXICON DefiniteVerb
++DefiniteSubject:%^Base DefiniteEnding ;
+
+LEXICON DefiniteEnding
+0:at # ;
+
+LEXICON StativePast
++Past5:%^DropVowel PastFiveEndings ;
+
+LEXICON StativeBaseRegular
++Stative: StativeForms ;
++Stative+ThirdPlural:%^StPluralStem StativePluralStem ;
+
+LEXICON StativeBaseSingular
++Stative: StativeForms ;
+
+LEXICON StativeFirst
++Stative+First: StativeForms ;
+
+LEXICON StativeSecondRegular
++Stative+Second: StativeForms ;
++Stative+SecondPlural:%^StPluralStem StativePluralStem ;
+
+LEXICON StativeSecondSingular
++Stative+Second: StativeForms ;
+
+LEXICON StativeFirstPlural
++Stative+FirstPlural: StativeForms ;
+
+LEXICON StativePluralStem
+0:vkē StativeForms ;
+
+LEXICON StativeForms
+0:%^StPlain StativeEndings ;
++Negative:%^DropVowel StativeNegativeEndings ;
++Derived:%^StDerive StativeDerivedEndings ;
++Derived:%^StLength StativeDerivedEndings ;
++Derived:%^StNasal StativeDerivedEndings ;
+
+LEXICON StativeDerivedEndings
+0:usē StativeEndings ;
+0:ose StativeEndings ;
+
+LEXICON StativeEndings
+0 # ; 0:s # ; 0:tis # ; 0:n # ;
+
+LEXICON StativeNegativeEndings
+0:ekot # ;
+
+LEXICON ComparisonAgent
++Stative+Agent1S:%^DropVowel ComparisonFirstEndings ;
++Stative+Agent1S+Negative:%^DropVowel ComparisonNegativeFirstEndings ;
++Stative+Agent2+Question:%^DropVowel ComparisonSecondQuestionEndings ;
+
+LEXICON ComparisonStative
++Stative:%^StPlain ComparisonStativeEndings ;
+
+LEXICON ComparisonStativeEndings
+0:t # ;
+
+LEXICON ComparisonFirstEndings
+0:vyēt # ;
+LEXICON ComparisonNegativeFirstEndings
+0:vkot # ;
+LEXICON ComparisonSecondQuestionEndings
+0:etskē # ;
+
+LEXICON MannerAdverb
++Manner:n # ;
+
+LEXICON TimeRecentY
++TimeRecent:yisē TimeAdverbEnd ;
+LEXICON TimeRecent
++TimeRecent:isē TimeAdverbEnd ;
+LEXICON TimeEarlier
++TimeEarlier:vnkē TimeAdverbEnd ;
++TimeEarlier:%-vnkē TimeAdverbEnd ;
+LEXICON TimeAdverbEnd
+0 # ; 0:n # ;
+
+LEXICON NumeralBase
++NumeralBase:%^DropN # ;
+
+LEXICON RegularVerb
+SharedVerbForms ;
+RegularPresent ;
+RegularPast ;
+RegularFuture ;
+RegularVhan ;
+RegularVhanAuxiliary ;
+RegularAuxiliary ;
+RegularImperative ;
+RegularPastTwo ;
+RegularPastThree ;
+
+LEXICON SingularVerb
+SharedVerbForms ;
+SingularPresent ;
+SingularPast ;
+SingularFuture ;
+SingularVhan ;
+SingularVhanAuxiliary ;
+SingularAuxiliary ;
+SingularImperative ;
+SingularPastTwo ;
+SingularPastThree ;
+
+LEXICON PluralVerb
++Plural: PluralVerbForms ;
+
+LEXICON PluralVerbForms
++Present:%^Present PluralPresentEndings ;
++Negative:%^Base NegativeVerbForms ;
++PresentAdverb:%^Present PluralPresentAdverbEndings ;
++Past1:%^Past PluralPastEndings ;
+PastThirdPlural ;
++Future:%^Base PluralFutureEndings ;
++Vhan:%^Base PluralVhanEndings ;
++VhanAuxiliary:%^Base PluralVhanAuxiliaryEndings ;
++Auxiliary:%^Present PluralAuxiliaryEndings ;
++Imperative:%^Base PluralImperativeEndings ;
++Past2:%^Base PluralPastTwoEndings ;
++Past3:%^Base PluralPastThreeEndings ;
++Past4:%^Base PastFourEndings ;
++Past5:%^Base PastFiveEndings ;
++VerbFormEt:%^VerbEt # ;
++PastParticiple:%^Past PastParticipleEnding ;
+
+LEXICON SharedVerbForms
++Negative:%^Base NegativeVerbForms ;
++Past4:%^Base PastFourEndings ;
++Past5:%^Base PastFiveEndings ;
++VerbAdverb:%^Base VerbAdverbEndings ;
++VerbEko:%^Base VerbEkoEnding ;
++VerbFormE:%^VerbE # ;
++VerbFormEt:%^VerbEt # ;
++PastParticiple:%^Past PastParticipleEnding ;
+
+LEXICON RegularPresent
++Present:%^Present PresentEndings ;
++PresentAdverb:%^Present PresentAdverbEndings ;
+
+LEXICON SingularPresent
++Present:%^Present SingularPresentEndings ;
++PresentAdverb:%^Present SingularPresentAdverbEndings ;
+
+LEXICON RegularPast
++Past1:%^Past PastEndings ;
+PastThirdPlural ;
+
+LEXICON PastThirdPlural
++Past1+ThirdPlural:%^PastSimplePlural PastSimplePluralEnding ;
++Past1+ThirdPlural:%^PastSpecialPlural PastSpecialPluralEnding ;
+
+LEXICON PastSimplePluralEnding
+0:vhkes # ;
+
+LEXICON PastSpecialPluralEnding
+0:akes # ;
+
+LEXICON SingularPast
++Past1:%^Past SingularPresentEndings ;
+
+LEXICON RegularFuture
++Future:%^Base FutureEndings ;
+
+LEXICON SingularFuture
++Future:%^Base SingularFutureEndings ;
+
+LEXICON RegularVhan
++Vhan:%^Base VhanEndings ;
+
+LEXICON SingularVhan
++Vhan:%^Base SingularVhanEndings ;
+
+LEXICON RegularVhanAuxiliary
++VhanAuxiliary:%^Base VhanAuxiliaryEndings ;
+
+LEXICON SingularVhanAuxiliary
++VhanAuxiliary:%^Base SingularVhanAuxiliaryEndings ;
+
+LEXICON RegularAuxiliary
++Auxiliary:%^Present AuxiliaryEndings ;
+
+LEXICON SingularAuxiliary
++Auxiliary:%^Present SingularAuxiliaryEndings ;
+
+LEXICON RegularImperative
++Imperative:%^Base ImperativeEndings ;
+
+LEXICON SingularImperative
++Imperative:%^Base SingularImperativeEndings ;
+
+LEXICON RegularPastTwo
++Past2:%^Base PastTwoEndings ;
+
+LEXICON SingularPastTwo
++Past2:%^Base SingularPastTwoEndings ;
+
+LEXICON RegularPastThree
++Past3:%^Base PastThreeEndings ;
+
+LEXICON SingularPastThree
++Past3:%^Base SingularPastThreeEndings ;
+
+LEXICON PresentEndings
+SingularPresentEndings ;
+0:ēs # ; 0:atskes # ; 0:ackes # ; 0:atses # ; 0:akes # ;
+
+LEXICON SingularPresentEndings
+0:is # ; 0:etskes # ; 0:eckes # ; 0:ecces # ;
+0:etces # ; 0:etses # ; 0:es # ;
+
+LEXICON PluralPresentEndings
+0:ēs # ; 0:atskes # ; 0:ackes # ; 0:atses # ; 0:es # ;
+
+LEXICON PresentAdverbEndings
+SingularPresentAdverbEndings ;
+0:ēn # ; 0:atsken # ; 0:acken # ; 0:atsen # ; 0:aken # ;
+
+LEXICON SingularPresentAdverbEndings
+0:in # ; 0:etsken # ; 0:ecken # ; 0:eccen # ;
+0:etcen # ; 0:etsen # ; 0:en # ;
+
+LEXICON PluralPresentAdverbEndings
+0:ēn # ; 0:atsken # ; 0:acken # ; 0:atsen # ; 0:en # ;
+
+LEXICON PastEndings
+SingularPresentEndings ;
+0:ēs # ; 0:atskes # ; 0:ackes # ; 0:atses # ;
+
+LEXICON PluralPastEndings
+0:ēs # ; 0:atskes # ; 0:ackes # ; 0:atses # ;
+
+LEXICON FutureEndings
+SingularFutureEndings ;
+0:ēyvrēs # ; 0:atskvrēs # ; 0:vkvrēs # ;
+
+LEXICON SingularFutureEndings
+0:arēs # ; 0:etskvrēs # ; 0:vrēs # ;
+
+LEXICON PluralFutureEndings
+0:ēyvrēs # ; 0:atskvrēs # ; 0:vrēs # ;
+
+LEXICON VhanEndings
+SingularVhanEndings ;
+0:vhanēs # ; 0:vhanatskes # ; 0:vhanackes # ;
+0:vhanatses # ; 0:vkvhanes # ;
+
+LEXICON SingularVhanEndings
+0:vhanis # ; 0:vhanetskes # ; 0:vhaneckes # ; 0:vhanecces # ;
+0:vhanetces # ; 0:vhanetses # ; 0:vhanes # ;
+
+LEXICON PluralVhanEndings
+0:vhanēs # ; 0:vhanatskes # ; 0:vhanackes # ;
+0:vhanatses # ; 0:vhanvnks # ;
+
+LEXICON VhanAuxiliaryEndings
+SingularVhanAuxiliaryEndings ;
+0:vhanēt # ; 0:vhanatsket # ; 0:vhanacket # ;
+0:vhanatset # ; 0:vkvhanet # ;
+
+LEXICON SingularVhanAuxiliaryEndings
+0:vhanit # ; 0:vhanetsket # ; 0:vhanecket # ; 0:vhaneccet # ;
+0:vhanetcet # ; 0:vhanetset # ; 0:vhanet # ;
+
+LEXICON PluralVhanAuxiliaryEndings
+0:vhanēt # ; 0:vhanatsket # ; 0:vhanacket # ;
+0:vhanatset # ;
+
+LEXICON AuxiliaryEndings
+SingularAuxiliaryEndings ;
+0:eyēt # ; 0:atsket # ; 0:acket # ; 0:atset # ; 0:akēt # ;
+
+LEXICON SingularAuxiliaryEndings
+0:iyēt # ; 0:etsket # ; 0:ecket # ; 0:eccet # ;
+0:etcet # ; 0:etset # ; 0:ēt # ;
+
+LEXICON PluralAuxiliaryEndings
+0:eyēt # ; 0:atsket # ; 0:acket # ; 0:atset # ; 0:ēt # ;
+
+LEXICON ImperativeEndings
+0:vs # ; 0:vks # ; 0:epvs # ; 0:ekot # ; 0:vkēs # ;
+0:vkēts # ; 0:ekvs # ; 0:vccvs # ; 0:vkvccvs # ;
+
+LEXICON SingularImperativeEndings
+0:vs # ; 0:epvs # ; 0:ekot # ; 0:vkēs # ; 0:ekvs # ; 0:vccvs # ;
+
+LEXICON PluralImperativeEndings
+0:vks # ; 0:epvs # ; 0:ekot # ; 0:vkēs # ; 0:vkēts # ; 0:vkvccvs # ;
+
+LEXICON PastTwoEndings
+SingularPastTwoEndings ;
+0:ēyvnks # ; 0:atskvnks # ; 0:ackvnks # ; 0:akvnks # ;
+
+LEXICON SingularPastTwoEndings
+0:ivnks # ; 0:etskvnks # ; 0:eckvnks # ;
+0:eccvnks # ; 0:etcvnks # ; 0:vnks # ;
+
+LEXICON PluralPastTwoEndings
+0:ēyvnks # ; 0:atskvnks # ; 0:ackvnks # ; 0:vnks # ;
+
+LEXICON PastThreeEndings
+SingularPastThreeEndings ;
+0:ēyemvts # ; 0:atskemvts # ; 0:ackemvts # ; 0:akemvts # ;
+
+LEXICON SingularPastThreeEndings
+0:imvts # ; 0:etskemvts # ; 0:eckemvts # ;
+0:eccemvts # ; 0:etcemvts # ; 0:emvts # ;
+
+LEXICON PluralPastThreeEndings
+0:ēyemvts # ; 0:atskemvts # ; 0:ackemvts # ; 0:vnks # ;
+
+LEXICON PastFourEndings
+0:vntv # ; 0:vntvs # ;
+
+LEXICON PastFiveEndings
+0:akvtē # ; 0:akvtēs # ; 0:eckvtē # ; 0:eckvtēs # ;
+0:vtē # ; 0:vtēs # ; 0:vtes # ;
+
+LEXICON VerbAdverbEndings
+0:en # ; 0:ēn # ; 0:aken # ;
+
+LEXICON VerbEkoEnding
+0:eko # ;
+
+LEXICON PastParticipleEnding
+0:et # ;
+
+LEXICON NegativeVerbForms
++Agent1S:vko NegativeEndings ;
++Agent1S:vk NegativeShortStatement ;
++Agent2:etskeko NegativeEndings ;
++Agent2:etskek NegativeShortStatement ;
++Agent3:eko NegativeEndings ;
++Agent3:ek NegativeShortStatement ;
++Agent1P:ēko NegativeEndings ;
++Agent1P:ēk NegativeShortStatement ;
++Agent2P:atskeko NegativeEndings ;
++Agent2P:atskek NegativeShortStatement ;
+
+LEXICON NegativeEndings
++Statement:s # ;
++Question: # ;
+
+LEXICON NegativeShortStatement
++Statement:s # ;

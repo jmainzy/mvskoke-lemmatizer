@@ -1,0 +1,60 @@
+! Dative and reciprocal allomorphs follow patient-prefix and verb phonology.
+Alphabet
+a b c d e f g h i j k l m n o p q r s t u v w x y z
+e:0 ē ē:0 ą ę ę̄ į ų ǫ ̄ ̨
+A B C D E F G H I J K L M N O P Q R S T U V W X Y Z Ē
+%  ’ • %- %! %?
+%^DativeM:0 %^DativeN:0 %^ReciprocalVowel:0 %^ReciprocalConsonant:0
+%^PossC:0 %^PossE:0 %^PossLong:0 %^PossVowel:0 %^PossBare:0 %^PossDrop:0
+%^PossM:0 %^PossN:0 %^PossNSp:0
+%^InstrumentConsonant:0 %^InstrumentVowel:0 ;
+
+Sets
+Vowel = a e ē i o u v ;
+VowelOrM = a e ē i o u v m ;
+VowelMOrP = a e ē i o u v m p ;
+
+Definitions
+DativeN = [ v: n: | c: e: n: | e: n: | p: u: n: | e: t: e: n: ] ;
+CvPrefix = [ c: v: | c: e: | p: u: | e: ] ;
+LongPrefix = [ c: a: | c: ē: | p: o: ] ;
+VowelPrefix = [ v: c: | e: c: | e: p: ] ;
+VmPrefix = [ v: m: | c: e: m: | e: m: | p: u: m: ] ;
+VnPrefix = [ v: n: | c: e: n: | e: n: | p: u: n: ] ;
+
+Rules
+
+"Instrumental es before a consonant"
+%^InstrumentConsonant:0 <=> _ e: s: [ \ Vowel: ] ;
+"Instrumental shortened before a vowel"
+%^InstrumentVowel:0 <=> _ ’: s: Vowel: ;
+
+"Joined dative before a consonant other than m"
+%^DativeN:0 <=> _ DativeN [ \ VowelOrM: ] ;
+
+"Reciprocal patient before a vowel"
+%^ReciprocalVowel:0 <=> _ e: t: Vowel: ;
+
+"Reciprocal patient before a consonant"
+%^ReciprocalConsonant:0 <=> _ e: t: e: [ \ Vowel: ] ;
+
+"Cv possessive before a consonant"
+%^PossC:0 <=> _ CvPrefix [ \ Vowel: ] ;
+"Cv possessive before e"
+%^PossE:0 <=> _ CvPrefix %^PossDrop:0 e:0 ;
+"Cv possessive before long e"
+%^PossLong:0 <=> _ LongPrefix %^PossDrop:0 ē:0 ;
+"Cv possessive before a or o"
+%^PossVowel:0 <=> _ VowelPrefix [ a: | o: ] ;
+"Drop the initial vowel after a cv possessive"
+e:0 <=> %^PossDrop:0 _ ;
+"Drop the initial long vowel after a cv possessive"
+ē:0 <=> %^PossDrop:0 _ ;
+
+"Vm possessive before a vowel, m, or p"
+%^PossM:0 <=> _ VmPrefix % : VowelMOrP: ;
+                 _ VmPrefix VowelMOrP: ;
+"Vn possessive before a consonant other than m"
+%^PossN:0 <=> _ VnPrefix [ \ VowelOrM: ] ;
+"Spaced vn possessive before a proper noun"
+%^PossNSp:0 <=> _ VnPrefix % : [ \ VowelOrM: ] ;

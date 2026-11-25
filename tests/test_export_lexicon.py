@@ -2,6 +2,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 import xml.etree.ElementTree as ET
 
@@ -43,6 +44,8 @@ class ExportLexiconTests(unittest.TestCase):
   <sense><grammatical-info value="verb"/></sense></entry>
 <entry id="plural"><lexical-unit><form lang="mus"><text>hahicetv</text></form></lexical-unit>
   <sense><grammatical-info value="verb"/></sense></entry>
+<entry id="noun"><lexical-unit><form lang="mus"><text>nometv</text></form></lexical-unit>
+  <sense><grammatical-info value="noun"/></sense></entry>
 </lift>""", encoding="utf-8")
         export_lexicon(self.lift, self.output)
         result = self.output.read_text(encoding="utf-8")
@@ -50,6 +53,27 @@ class ExportLexiconTests(unittest.TestCase):
         self.assertIn("hayetv:hahicetv VerbsPluralVerbTag ;", result)
         self.assertIn("hahicetv:hahicetv VerbsRegularVerbTag ;", result)
         self.assertIn("+V: PluralVerb ;", result)
+        person_entries = result.split("LEXICON PersonVerbs\n", 1)[1].split(
+            "LEXICON PossessiveCvNouns\n", 1
+        )[0]
+        self.assertIn("hayetv:hahicetv VerbsPluralVerbTag ;", person_entries)
+        self.assertIn("hayetv:hahicetv VerbsPatientPluralVerbTag ;", person_entries)
+        self.assertNotIn("nometv", person_entries)
+
+    def test_stative_classes_respect_irregular_plural_relations(self):
+        self.lift.write_text("""<lift>
+<entry id="regular"><lexical-unit><form lang="mus"><text>tayē</text></form></lexical-unit>
+  <sense><grammatical-info value="stative"/></sense></entry>
+<entry id="irregular"><lexical-unit><form lang="mus"><text>hvnē</text></form></lexical-unit>
+  <relation type="EntryPl" ref="plural"/>
+  <sense><grammatical-info value="adj"/></sense></entry>
+</lift>""", encoding="utf-8")
+        export_lexicon(self.lift, self.output)
+        result = self.output.read_text(encoding="utf-8")
+        self.assertIn("tayē:tayē AdjectivesStativeBaseRegularTag ;", result)
+        self.assertIn("tayē:%^SP1%^SP2%^SP3tayē AdjectivesStativeFirstPluralTag ;", result)
+        self.assertIn("hvnē:hvnē AdjectivesStativeBaseSingularTag ;", result)
+        self.assertNotIn("hvnē:%^SP1%^SP2%^SP3hvnē", result)
 
     def test_sense_categories_and_uncategorized_entries_are_preserved(self):
         self.lift.write_text("""<lift>
@@ -80,7 +104,8 @@ class ExportLexiconTests(unittest.TestCase):
             with self.subTest(lexicon=lexicon):
                 self.assertIn(f"LEXICON {lexicon}\n", result)
                 self.assertIn(f"LEXICON {lexicon}Tag\n{tag}: # ;\n", result)
-        self.assertEqual(result.count("word NounsTag ;"), 1)
+        nouns = result.split("LEXICON Nouns\n", 1)[1].split("\nLEXICON ", 1)[0]
+        self.assertEqual(nouns.count("word NounsTag ;"), 1)
         self.assertIn("word VerbsTag ;", result)
         self.assertIn("word UncategorizedTag ;", result)
         self.assertIn("verb VerbsTag ;", result)
@@ -106,6 +131,20 @@ class ExportLexiconTests(unittest.TestCase):
                 with self.assertRaises((ValueError, ET.ParseError)):
                     export_lexicon(self.lift, self.output)
                 self.assertEqual(self.output.read_text(encoding="utf-8"), "existing")
+
+    def test_invalid_time_adverb_table_does_not_replace_output(self):
+        table = self.output.with_name("time_adverbs.tsv")
+        table.write_text("nerē\t+N\tnere\tNotARule\n", encoding="utf-8")
+        self.lift.write_text(
+            '<lift><entry><lexical-unit><form lang="mus"><text>nerē</text></form>'
+            '</lexical-unit><sense><grammatical-info value="noun"/></sense></entry></lift>',
+            encoding="utf-8",
+        )
+        self.output.write_text("existing", encoding="utf-8")
+        with patch("src.export_lexicon.TIME_ADVERBS", table):
+            with self.assertRaisesRegex(ValueError, "invalid time adverb"):
+                export_lexicon(self.lift, self.output)
+        self.assertEqual(self.output.read_text(encoding="utf-8"), "existing")
 
     def test_input_cannot_be_overwritten(self):
         self.lift.write_text("<lift/>", encoding="utf-8")

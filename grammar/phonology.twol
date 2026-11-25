@@ -1,0 +1,180 @@
+! L- and H-grades of verb stems. The markers follow the dictionary -etv.
+Alphabet
+a a:0 a:v c c:i e e:0 e:ē e:y ē ē:e ē:0 f f:i h h:i
+i k l l:i m m:i n n:i n:0 o o:w p p:i r r:i s s:i
+t t:0 t:i u v v:0 v:a w w:i y y:i
+b d g j q x z A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
+%  ą ę ę̄ į ų ǫ Ē ̄ ̨ ’ • %- %! %?
+%^Present:0 %^Past:0 %^PastSimplePlural:0 %^PastSpecialPlural:0
+%^Base:0 %^VerbE:0 %^VerbEt:0
+%^DropVowel:0 %^DropN:0 0:h 0:i 0:y
+%^SF1:c %^SF1:v %^SF2:c %^SF2:v %^SF3:0 %^SF3:a %^SF3:v
+%^SS1:c %^SS1:e %^SS2:c %^SS2:e %^SS3:0 %^SS3:e %^SS3:ē
+%^SP1:e %^SP1:p %^SP2:p %^SP2:u %^SP3:0 %^SP3:o
+%^PP3:0 %^PP3:o %^PP3:u
+%^StPlain %^StPluralStem %^StDerive %^StLength %^StNasal
+%^DativeM %^DativeN %^ReciprocalVowel %^ReciprocalConsonant
+%^PossC %^PossE %^PossLong %^PossVowel %^PossBare %^PossDrop
+%^PossM %^PossN %^PossNSp %^InstrumentConsonant %^InstrumentVowel ;
+
+Sets
+Vowel = a e ē i o u v ;
+Consonant = c f h k l m n p r s t w y ;
+ExceptCK = f h l m n p r s t w y ;
+Geminate = c f h l m n p r s t w y ;
+LFirst = l m n ;
+LSecond = c f h k l m n p r s t w ;
+
+Definitions
+VerbEnd = e: t: v: ;
+NotVowel = \ Vowel: ;
+HGrade = [ %^Past:0 | %^PastSpecialPlural:0 ] ;
+SpecialPastStem = [
+    u: e: ( 0:h ) ( 0:i ) Consonant:
+  | v: o: ( 0:i ) k:
+  | Vowel: Consonant: Consonant:* ( 0:i ) Consonant: ( 0:y )
+] ;
+StEnd = [ %^StPlain: | %^StPluralStem: | %^StDerive: | %^StLength: | %^StNasal: ] ;
+StA = [ a: | ē: | e:0 StEnd ] ;
+StE = e:0 [ \ [ %^StPlain: | %^StPluralStem: | %^StDerive: | %^StLength: | %^StNasal: ] ] ;
+StOther = \ [ a: | ē: | e: | v: | o: ] ;
+
+Rules
+
+"Remove dictionary -etv: e"
+e:0 <=> _ t: v: [ %^Present:0 | %^Past:0 | %^PastSimplePlural:0 | %^PastSpecialPlural:0 | %^Base:0 ] ;
+        _ %^DropVowel:0 ;
+        [ %^SF3: | %^SS3: | %^SP3: | %^PP3: ] _ ;
+
+"Remove long final vowel"
+ē:0 <=> _ %^DropVowel:0 ;
+        [ %^SF3: | %^SS3: | %^SP3: | %^PP3: ] _ ;
+
+"Remove initial stative a or v after personal prefix"
+a:0 <=> [ %^SF3: | %^SS3: | %^SP3: | %^PP3: ] _ ;
+
+"Remove numeral final n"
+n:0 <=> _ %^DropN:0 ;
+
+"Remove dictionary -etv: t"
+t:0 <=> e: _ v: [ %^Present:0 | %^Past:0 | %^PastSimplePlural:0 | %^PastSpecialPlural:0 | %^Base:0 | %^VerbE:0 ] ;
+
+"Remove dictionary -etv: v"
+v:0 <=> e: t: _ [ %^Present:0 | %^Past:0 | %^PastSimplePlural:0 | %^PastSpecialPlural:0 | %^Base:0 | %^VerbE:0 | %^VerbEt:0 ] ;
+        [ %^SF3: | %^SS3: | %^SP3: | %^PP3: ] _ ;
+
+"Stative first prefix: initial v"
+%^SF1:v <=> _ %^SF2: %^SF3: [ StA | v: | o: ] ;
+"Stative first prefix: initial c"
+%^SF1:c <=> _ %^SF2: %^SF3: [ StE | StOther ] ;
+"Stative first prefix: medial c"
+%^SF2:c <=> %^SF1:v _ ;
+"Stative first prefix: medial v"
+%^SF2:v <=> %^SF1:c _ ;
+"Stative first prefix: final a"
+%^SF3:a <=> %^SF1:v %^SF2:c _ StA ;
+"Stative first prefix: final v"
+%^SF3:v <=> %^SF1:v %^SF2:c _ v: ;
+"Stative first prefix: no final vowel"
+%^SF3:0 <=> %^SF1:v %^SF2:c _ o: ;
+            %^SF1:c %^SF2:v _ ;
+
+"Stative second prefix: initial e"
+%^SS1:e <=> _ %^SS2: %^SS3: [ StA | v: | o: ] ;
+"Stative second prefix: initial c"
+%^SS1:c <=> _ %^SS2: %^SS3: [ StE | StOther ] ;
+"Stative second prefix: medial c"
+%^SS2:c <=> %^SS1:e _ ;
+"Stative second prefix: medial e"
+%^SS2:e <=> %^SS1:c _ ;
+"Stative second prefix: final long e"
+%^SS3:ē <=> %^SS1:e %^SS2:c _ StA ;
+"Stative second prefix: final e"
+%^SS3:e <=> %^SS1:e %^SS2:c _ v: ;
+"Stative second prefix: no final vowel"
+%^SS3:0 <=> %^SS1:e %^SS2:c _ o: ;
+            %^SS1:c %^SS2:e _ ;
+
+"Stative first plural prefix: initial e"
+%^SP1:e <=> _ %^SP2: [ %^SP3: | %^PP3: ] [ StA | v: | o: ] ;
+"Stative first plural prefix: initial p"
+%^SP1:p <=> _ %^SP2: [ %^SP3: | %^PP3: ] [ StE | StOther ] ;
+"Stative first plural prefix: medial p"
+%^SP2:p <=> %^SP1:e _ ;
+"Stative first plural prefix: medial u"
+%^SP2:u <=> %^SP1:p _ ;
+"Stative first plural prefix: final o"
+%^SP3:o <=> %^SP1:e %^SP2:p _ [ StA | v: ] ;
+"Stative first plural prefix: no final vowel"
+%^SP3:0 <=> %^SP1:e %^SP2:p _ o: ;
+            %^SP1:p %^SP2:u _ ;
+"Patient first plural prefix: final o"
+%^PP3:o <=> %^SP1:e %^SP2:p _ StA ;
+"Patient first plural prefix: final u"
+%^PP3:u <=> %^SP1:e %^SP2:p _ v: ;
+"Patient first plural prefix: no final vowel"
+%^PP3:0 <=> %^SP1:e %^SP2:p _ o: ;
+            %^SP1:p %^SP2:u _ ;
+
+"Simple past third plural stem"
+%^PastSimplePlural:0 <=> Vowel: NotVowel* VerbEnd _ ;
+  except SpecialPastStem VerbEnd _ ;
+
+"Special past third plural stem"
+%^PastSpecialPlural:0 <=> SpecialPastStem VerbEnd _ ;
+
+"L-grade e"
+e:ē <=> _ NotVowel* VerbEnd %^Present:0 ;
+  except
+    [ %^SF3: | %^SS3: | %^SP3: | %^PP3: ] _ NotVowel* VerbEnd %^Present:0 ;
+    u: _ NotVowel* VerbEnd %^Present:0 ;
+    _ LFirst: LSecond: NotVowel* VerbEnd %^Present:0 ;
+
+"L-grade v"
+v:a <=> _ NotVowel* VerbEnd %^Present:0 ;
+  except
+    _ LFirst: LSecond: NotVowel* VerbEnd %^Present:0 ;
+
+"H-grade a"
+a:v <=> _ 0:h ;
+
+"H-grade long e"
+ē:e <=> _ 0:h ;
+
+"H-grade h insertion"
+0:h <=> Vowel: _ ( Consonant: ) VerbEnd HGrade ;
+  except
+    u: e: _ ExceptCK: VerbEnd HGrade ;
+    v: o: _ k: VerbEnd HGrade ;
+
+"H-grade ue before a consonant other than c or k"
+e:y <=> u: _ ( 0:i ) ExceptCK: VerbEnd HGrade ;
+
+"H-grade vok"
+o:w <=> v: _ ( 0:i ) k: VerbEnd HGrade ;
+
+"H-grade i insertion"
+0:i <=> u: e:y _ ExceptCK: VerbEnd HGrade ;
+        v: o:w _ k: VerbEnd HGrade ;
+        Vowel: Consonant: Consonant:* _ Consonant: VerbEnd HGrade ;
+  except
+    Vowel: X: _ X: VerbEnd HGrade ;
+  where X in Geminate ;
+
+"H-grade geminate"
+X:i <=> Vowel: X: _ ( 0:y ) VerbEnd HGrade ;
+  where X in Geminate ;
+
+"H-grade geminate y"
+0:y <=> Vowel: c: c:i _ VerbEnd HGrade ;
+        Vowel: f: f:i _ VerbEnd HGrade ;
+        Vowel: h: h:i _ VerbEnd HGrade ;
+        Vowel: l: l:i _ VerbEnd HGrade ;
+        Vowel: m: m:i _ VerbEnd HGrade ;
+        Vowel: n: n:i _ VerbEnd HGrade ;
+        Vowel: p: p:i _ VerbEnd HGrade ;
+        Vowel: r: r:i _ VerbEnd HGrade ;
+        Vowel: s: s:i _ VerbEnd HGrade ;
+        Vowel: t: t:i _ VerbEnd HGrade ;
+        Vowel: w: w:i _ VerbEnd HGrade ;
+        Vowel: y: y:i _ VerbEnd HGrade ;

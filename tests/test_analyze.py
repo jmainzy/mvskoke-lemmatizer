@@ -1,11 +1,12 @@
 import csv
+import importlib
 import os
 from pathlib import Path
 import tempfile
 import unittest
 from unittest.mock import patch
 
-from src import analyze
+analyze = importlib.import_module("src.analyze")
 
 
 class AnalyzeFileTests(unittest.TestCase):
@@ -25,7 +26,7 @@ class AnalyzeFileTests(unittest.TestCase):
             "unknown": [],
         }
         with patch("src.analyze.pyhfst.HfstInputStream") as stream:
-            stream.return_value.read.return_value.lookup.side_effect = lookups.__getitem__
+            stream.return_value.read.return_value.lookup.side_effect = lambda word: lookups.get(word, [])
             with patch("sys.argv", ["analyze.py", str(self.text), "--output", str(self.output),
                                     "--analyzer", str(self.analyzer)]):
                 analyze.main()
@@ -38,6 +39,63 @@ class AnalyzeFileTests(unittest.TestCase):
                 ["unknown", "[]"],
                 ["pale", "['palen+Num+NumeralBase']"],
             ])
+
+    def test_spaced_dative_adds_a_row_without_losing_words_or_crossing_boundaries(self):
+        self.text.write_text(
+            "vm opunayes, vm, opunayes\nvm\nopunayes vm opunayes\n",
+            encoding="utf-8",
+        )
+        lookups = {
+            "vm": [("vm+Unknown", 0.0)],
+            "opunayes": [("opunvyetv+V+Present", 0.0)],
+            "vm opunayes": [("+Dative1S+opunvyetv+V+Present", 0.0)],
+        }
+        with patch("src.analyze.pyhfst.HfstInputStream") as stream:
+            stream.return_value.read.return_value.lookup.side_effect = lambda word: lookups.get(word, [])
+            with patch("sys.argv", ["analyze.py", str(self.text), "--output", str(self.output),
+                                    "--analyzer", str(self.analyzer)]):
+                analyze.main()
+        with self.output.open(encoding="utf-8", newline="") as result:
+            rows = list(csv.DictReader(result, delimiter="\t"))
+        self.assertEqual([row["word"] for row in rows], [
+            "vm", "vm opunayes", "opunayes", "vm", "opunayes",
+            "vm", "opunayes", "vm", "vm opunayes", "opunayes",
+        ])
+        self.assertEqual(rows[1]["analysis"], "['+Dative1S+opunvyetv+V+Present']")
+
+    def test_spaced_possessive_adds_a_phrase_row(self):
+        lookups = {
+            "vm efv": [("+Possessive1S+efv+N", 0.0)],
+            "vm": [("vm+Unknown", 0.0)],
+            "efv": [("efv+N", 0.0)],
+        }
+        from unittest.mock import Mock
+
+        transducer = Mock()
+        transducer.lookup.side_effect = lambda word: lookups.get(word, [])
+        self.assertEqual(analyze.analyze_lines([["vm", "efv"]], transducer), [
+            ("vm", ["vm+Unknown"]),
+            ("vm efv", ["+Possessive1S+efv+N"]),
+            ("efv", ["efv+N"]),
+        ])
+
+    def test_comitative_and_comparison_phrases_and_question_punctuation(self):
+        lookups = {
+            "a em opanes": [("+Comitative3+opvnetv+V+Present", 0.0)],
+            "’svm mahēt": [("+Compare1S+mahē+Adj+Stative", 0.0)],
+            "yvhikeko": [("yvhiketv+V+Negative+Agent3+Question", 0.0)],
+        }
+        from unittest.mock import Mock
+
+        transducer = Mock()
+        transducer.lookup.side_effect = lambda word: lookups.get(word, [])
+        results = analyze.analyze_lines([
+            ["a", "em", "opanes", "’svm", "mahēt", "yvhikeko?"],
+            ["a", "em,", "opanes", "’svm,", "mahēt"],
+        ], transducer)
+        phrases = [word for word, _ in results if " " in word]
+        self.assertEqual(phrases, ["a em opanes", "’svm mahēt"])
+        self.assertIn(("yvhikeko", ["yvhiketv+V+Negative+Agent3+Question"]), results)
 
     def test_refuses_to_overwrite_input_or_analyzer(self):
         self.text.write_text("pale", encoding="utf-8")
