@@ -1,0 +1,259 @@
+! Verb continuation classes. Endings reflect the existing lemmatizer;
+! their person and number are not specified where that code did not specify them.
+Multichar_Symbols
++Present +PresentAdverb +Past1 +Past2 +Past3 +Past4 +Past5
++Future +Vhan +VhanAuxiliary +Auxiliary +Imperative +VerbAdverb +VerbEko +Plural
++VerbFormE +VerbFormEt +PastParticiple
++Subject +DirectObject +DefiniteSubject +NumeralBase
+%^Present %^Past %^Base %^VerbE %^VerbEt %^DropVowel %^DropN
+
+LEXICON Nominal
++Subject:t # ;
++DirectObject:n # ;
+
+LEXICON DefiniteVowel
++DefiniteSubject:%^DropVowel DefiniteEnding ;
+
+LEXICON DefiniteVerb
++DefiniteSubject:%^Base DefiniteEnding ;
+
+LEXICON DefiniteEnding
+0:at # ;
+
+LEXICON StativePast
++Past5:%^DropVowel PastFiveEndings ;
+
+LEXICON NumeralBase
++NumeralBase:%^DropN # ;
+
+LEXICON RegularVerb
+SharedVerbForms ;
+RegularPresent ;
+RegularPast ;
+RegularFuture ;
+RegularVhan ;
+RegularVhanAuxiliary ;
+RegularAuxiliary ;
+RegularImperative ;
+RegularPastTwo ;
+RegularPastThree ;
+
+LEXICON SingularVerb
+SharedVerbForms ;
+SingularPresent ;
+SingularPast ;
+SingularFuture ;
+SingularVhan ;
+SingularVhanAuxiliary ;
+SingularAuxiliary ;
+SingularImperative ;
+SingularPastTwo ;
+SingularPastThree ;
+
+LEXICON PluralVerb
++Plural: PluralVerbForms ;
+
+LEXICON PluralVerbForms
++Present:%^Present PluralPresentEndings ;
++PresentAdverb:%^Present PluralPresentAdverbEndings ;
++Past1:%^Past PluralPastEndings ;
++Future:%^Base PluralFutureEndings ;
++Vhan:%^Base PluralVhanEndings ;
++VhanAuxiliary:%^Base PluralVhanAuxiliaryEndings ;
++Auxiliary:%^Present PluralAuxiliaryEndings ;
++Imperative:%^Base PluralImperativeEndings ;
++Past2:%^Base PluralPastTwoEndings ;
++Past3:%^Base PluralPastThreeEndings ;
++Past4:%^Base PastFourEndings ;
++Past5:%^Base PastFiveEndings ;
++VerbFormEt:%^VerbEt # ;
++PastParticiple:%^Past PastParticipleEnding ;
+
+LEXICON SharedVerbForms
++Past4:%^Base PastFourEndings ;
++Past5:%^Base PastFiveEndings ;
++VerbAdverb:%^Base VerbAdverbEndings ;
++VerbEko:%^Base VerbEkoEnding ;
++VerbFormE:%^VerbE # ;
++VerbFormEt:%^VerbEt # ;
++PastParticiple:%^Past PastParticipleEnding ;
+
+LEXICON RegularPresent
++Present:%^Present PresentEndings ;
++PresentAdverb:%^Present PresentAdverbEndings ;
+
+LEXICON SingularPresent
++Present:%^Present SingularPresentEndings ;
++PresentAdverb:%^Present SingularPresentAdverbEndings ;
+
+LEXICON RegularPast
++Past1:%^Past PastEndings ;
+
+LEXICON SingularPast
++Past1:%^Past SingularPresentEndings ;
+
+LEXICON RegularFuture
++Future:%^Base FutureEndings ;
+
+LEXICON SingularFuture
++Future:%^Base SingularFutureEndings ;
+
+LEXICON RegularVhan
++Vhan:%^Base VhanEndings ;
+
+LEXICON SingularVhan
++Vhan:%^Base SingularVhanEndings ;
+
+LEXICON RegularVhanAuxiliary
++VhanAuxiliary:%^Base VhanAuxiliaryEndings ;
+
+LEXICON SingularVhanAuxiliary
++VhanAuxiliary:%^Base SingularVhanAuxiliaryEndings ;
+
+LEXICON RegularAuxiliary
++Auxiliary:%^Present AuxiliaryEndings ;
+
+LEXICON SingularAuxiliary
++Auxiliary:%^Present SingularAuxiliaryEndings ;
+
+LEXICON RegularImperative
++Imperative:%^Base ImperativeEndings ;
+
+LEXICON SingularImperative
++Imperative:%^Base SingularImperativeEndings ;
+
+LEXICON RegularPastTwo
++Past2:%^Base PastTwoEndings ;
+
+LEXICON SingularPastTwo
++Past2:%^Base SingularPastTwoEndings ;
+
+LEXICON RegularPastThree
++Past3:%^Base PastThreeEndings ;
+
+LEXICON SingularPastThree
++Past3:%^Base SingularPastThreeEndings ;
+
+LEXICON PresentEndings
+SingularPresentEndings ;
+0:ēs # ; 0:atskes # ; 0:ackes # ; 0:atses # ; 0:akes # ;
+
+LEXICON SingularPresentEndings
+0:is # ; 0:etskes # ; 0:eckes # ; 0:ecces # ;
+0:etces # ; 0:etses # ; 0:es # ;
+
+LEXICON PluralPresentEndings
+0:ēs # ; 0:atskes # ; 0:ackes # ; 0:atses # ; 0:es # ;
+
+LEXICON PresentAdverbEndings
+SingularPresentAdverbEndings ;
+0:ēn # ; 0:atsken # ; 0:acken # ; 0:atsen # ; 0:aken # ;
+
+LEXICON SingularPresentAdverbEndings
+0:in # ; 0:etsken # ; 0:ecken # ; 0:eccen # ;
+0:etcen # ; 0:etsen # ; 0:en # ;
+
+LEXICON PluralPresentAdverbEndings
+0:ēn # ; 0:atsken # ; 0:acken # ; 0:atsen # ; 0:en # ;
+
+LEXICON PastEndings
+SingularPresentEndings ;
+0:ēs # ; 0:atskes # ; 0:ackes # ; 0:atses # ;
+
+LEXICON PluralPastEndings
+0:ēs # ; 0:atskes # ; 0:ackes # ; 0:atses # ;
+
+LEXICON FutureEndings
+SingularFutureEndings ;
+0:ēyvrēs # ; 0:atskvrēs # ; 0:vkvrēs # ;
+
+LEXICON SingularFutureEndings
+0:arēs # ; 0:etskvrēs # ; 0:vrēs # ;
+
+LEXICON PluralFutureEndings
+0:ēyvrēs # ; 0:atskvrēs # ; 0:vrēs # ;
+
+LEXICON VhanEndings
+SingularVhanEndings ;
+0:vhanēs # ; 0:vhanatskes # ; 0:vhanackes # ;
+0:vhanatses # ; 0:vkvhanes # ;
+
+LEXICON SingularVhanEndings
+0:vhanis # ; 0:vhanetskes # ; 0:vhaneckes # ; 0:vhanecces # ;
+0:vhanetces # ; 0:vhanetses # ; 0:vhanes # ;
+
+LEXICON PluralVhanEndings
+0:vhanēs # ; 0:vhanatskes # ; 0:vhanackes # ;
+0:vhanatses # ; 0:vhanvnks # ;
+
+LEXICON VhanAuxiliaryEndings
+SingularVhanAuxiliaryEndings ;
+0:vhanēt # ; 0:vhanatsket # ; 0:vhanacket # ;
+0:vhanatset # ; 0:vkvhanet # ;
+
+LEXICON SingularVhanAuxiliaryEndings
+0:vhanit # ; 0:vhanetsket # ; 0:vhanecket # ; 0:vhaneccet # ;
+0:vhanetcet # ; 0:vhanetset # ; 0:vhanet # ;
+
+LEXICON PluralVhanAuxiliaryEndings
+0:vhanēt # ; 0:vhanatsket # ; 0:vhanacket # ;
+0:vhanatset # ;
+
+LEXICON AuxiliaryEndings
+SingularAuxiliaryEndings ;
+0:eyēt # ; 0:atsket # ; 0:acket # ; 0:atset # ; 0:akēt # ;
+
+LEXICON SingularAuxiliaryEndings
+0:iyēt # ; 0:etsket # ; 0:ecket # ; 0:eccet # ;
+0:etcet # ; 0:etset # ; 0:ēt # ;
+
+LEXICON PluralAuxiliaryEndings
+0:eyēt # ; 0:atsket # ; 0:acket # ; 0:atset # ; 0:ēt # ;
+
+LEXICON ImperativeEndings
+0:vs # ; 0:vks # ; 0:epvs # ; 0:ekot # ; 0:vkēs # ;
+0:vkēts # ; 0:ekvs # ; 0:vccvs # ; 0:vkvccvs # ;
+
+LEXICON SingularImperativeEndings
+0:vs # ; 0:epvs # ; 0:ekot # ; 0:vkēs # ; 0:ekvs # ; 0:vccvs # ;
+
+LEXICON PluralImperativeEndings
+0:vks # ; 0:epvs # ; 0:ekot # ; 0:vkēs # ; 0:vkēts # ; 0:vkvccvs # ;
+
+LEXICON PastTwoEndings
+SingularPastTwoEndings ;
+0:ēyvnks # ; 0:atskvnks # ; 0:ackvnks # ; 0:akvnks # ;
+
+LEXICON SingularPastTwoEndings
+0:ivnks # ; 0:etskvnks # ; 0:eckvnks # ;
+0:eccvnks # ; 0:etcvnks # ; 0:vnks # ;
+
+LEXICON PluralPastTwoEndings
+0:ēyvnks # ; 0:atskvnks # ; 0:ackvnks # ; 0:vnks # ;
+
+LEXICON PastThreeEndings
+SingularPastThreeEndings ;
+0:ēyemvts # ; 0:atskemvts # ; 0:ackemvts # ; 0:akemvts # ;
+
+LEXICON SingularPastThreeEndings
+0:imvts # ; 0:etskemvts # ; 0:eckemvts # ;
+0:eccemvts # ; 0:etcemvts # ; 0:emvts # ;
+
+LEXICON PluralPastThreeEndings
+0:ēyemvts # ; 0:atskemvts # ; 0:ackemvts # ; 0:vnks # ;
+
+LEXICON PastFourEndings
+0:vntv # ; 0:vntvs # ;
+
+LEXICON PastFiveEndings
+0:akvtē # ; 0:akvtēs # ; 0:eckvtē # ; 0:eckvtēs # ;
+0:vtē # ; 0:vtēs # ; 0:vtes # ;
+
+LEXICON VerbAdverbEndings
+0:en # ; 0:ēn # ; 0:aken # ;
+
+LEXICON VerbEkoEnding
+0:eko # ;
+
+LEXICON PastParticipleEnding
+0:et # ;

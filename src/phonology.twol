@@ -1,0 +1,94 @@
+! L- and H-grades of verb stems. The markers follow the dictionary -etv.
+Alphabet
+a a:v c c:i e e:0 e:ē e:y ē ē:e ē:0 f f:i h h:i
+i k l l:i m m:i n n:i n:0 o o:w p p:i r r:i s s:i
+t t:0 t:i u v v:0 v:a w w:i y y:i
+b d g j q x z A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
+ą ę į ų ǫ Ē ̄ ̨ ’ • %- %! %? % 
+%^Present:0 %^Past:0 %^Base:0 %^VerbE:0 %^VerbEt:0
+%^DropVowel:0 %^DropN:0 0:h 0:i 0:y ;
+
+Sets
+Vowel = a e ē i o u v ;
+Consonant = c f h k l m n p r s t w y ;
+ExceptCK = f h l m n p r s t w y ;
+Geminate = c f h l m n p r s t w y ;
+LFirst = l m n ;
+LSecond = c f h k l m n p r s t w ;
+
+Definitions
+VerbEnd = e: t: v: ;
+NotVowel = \ Vowel: ;
+
+Rules
+
+"Remove dictionary -etv: e"
+e:0 <=> _ t: v: [ %^Present:0 | %^Past:0 | %^Base:0 ] ;
+        _ %^DropVowel:0 ;
+
+"Remove long final vowel"
+ē:0 <=> _ %^DropVowel:0 ;
+
+"Remove numeral final n"
+n:0 <=> _ %^DropN:0 ;
+
+"Remove dictionary -etv: t"
+t:0 <=> e: _ v: [ %^Present:0 | %^Past:0 | %^Base:0 | %^VerbE:0 ] ;
+
+"Remove dictionary -etv: v"
+v:0 <=> e: t: _ [ %^Present:0 | %^Past:0 | %^Base:0 | %^VerbE:0 | %^VerbEt:0 ] ;
+
+"L-grade e"
+e:ē <=> _ NotVowel* VerbEnd %^Present:0 ;
+  except
+    u: _ NotVowel* VerbEnd %^Present:0 ;
+    _ LFirst: LSecond: NotVowel* VerbEnd %^Present:0 ;
+
+"L-grade v"
+v:a <=> _ NotVowel* VerbEnd %^Present:0 ;
+  except
+    _ LFirst: LSecond: NotVowel* VerbEnd %^Present:0 ;
+
+"H-grade a"
+a:v <=> _ 0:h ;
+
+"H-grade long e"
+ē:e <=> _ 0:h ;
+
+"H-grade h insertion"
+0:h <=> Vowel: _ ( Consonant: ) VerbEnd %^Past:0 ;
+  except
+    u: e: _ ExceptCK: VerbEnd %^Past:0 ;
+    v: o: _ k: VerbEnd %^Past:0 ;
+
+"H-grade ue before a consonant other than c or k"
+e:y <=> u: _ ( 0:i ) ExceptCK: VerbEnd %^Past:0 ;
+
+"H-grade vok"
+o:w <=> v: _ ( 0:i ) k: VerbEnd %^Past:0 ;
+
+"H-grade i insertion"
+0:i <=> u: e:y _ ExceptCK: VerbEnd %^Past:0 ;
+        v: o:w _ k: VerbEnd %^Past:0 ;
+        Vowel: Consonant: Consonant:* _ Consonant: VerbEnd %^Past:0 ;
+  except
+    Vowel: X: _ X: VerbEnd %^Past:0 ;
+  where X in Geminate ;
+
+"H-grade geminate"
+X:i <=> Vowel: X: _ ( 0:y ) VerbEnd %^Past:0 ;
+  where X in Geminate ;
+
+"H-grade geminate y"
+0:y <=> Vowel: c: c:i _ VerbEnd %^Past:0 ;
+        Vowel: f: f:i _ VerbEnd %^Past:0 ;
+        Vowel: h: h:i _ VerbEnd %^Past:0 ;
+        Vowel: l: l:i _ VerbEnd %^Past:0 ;
+        Vowel: m: m:i _ VerbEnd %^Past:0 ;
+        Vowel: n: n:i _ VerbEnd %^Past:0 ;
+        Vowel: p: p:i _ VerbEnd %^Past:0 ;
+        Vowel: r: r:i _ VerbEnd %^Past:0 ;
+        Vowel: s: s:i _ VerbEnd %^Past:0 ;
+        Vowel: t: t:i _ VerbEnd %^Past:0 ;
+        Vowel: w: w:i _ VerbEnd %^Past:0 ;
+        Vowel: y: y:i _ VerbEnd %^Past:0 ;

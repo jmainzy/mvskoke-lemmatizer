@@ -5,7 +5,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from segment import Morphology
+from src.segment import Morphology
 
 
 LIFT = """<lift>
