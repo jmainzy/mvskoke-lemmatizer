@@ -3,3 +3,5 @@ __pycache__
 lemmatize_results.tsv
 __init__.py
 analysis_results.tsv
+*.egg
+*.egg-info

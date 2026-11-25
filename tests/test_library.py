@@ -18,14 +18,14 @@ class LibraryTests(TestCase):
             root = Path(directory)
             source = root / "input.txt"
             output = root / "output.tsv"
-            source.write_text("punvttv nere\n", encoding="utf-8")
+            source.write_text("punvttv nere ton ele\n", encoding="utf-8")
             subprocess.run(
                 [sys.executable, str(script), str(source), "--output", str(output)],
                 cwd=root, check=True, capture_output=True, text=True,
             )
             self.assertEqual(
                 output.read_text(encoding="utf-8"),
-                "word\tlemma\npunvttv\tponvttv\nnere\tnerē\n",
+                "word\tlemma\npunvttv\tponvttv\nnere\tnerē\nton\tton\nele\tele\n",
             )
 
     def test_examples_and_normalization(self):
@@ -67,14 +67,30 @@ class LibraryTests(TestCase):
         self.assertEqual(analyze("puna", transducer), ["accent+N"])
         self.assertEqual(analyze("pon", transducer), [])
 
-    def test_lemmas_include_prefix_markers_and_multiple_results(self):
+    def test_longest_lemma_including_prefix_markers(self):
         with patch.object(lemmatizer, "analyze", return_value=[
             "+Dative2+Patient1S+cvpakketv+V+Present",
             "+Patient1S+cvpakketv+V+Present",
             "cvpakkē+Adj+Stative+First",
             "+DativeReciprocal+etem punahoyetv+V",
         ]):
-            self.assertEqual(lemmatize("word"), ["cvpakketv", "cvpakkē", "etem punahoyetv"])
+            self.assertEqual(lemmatize("word"), ["etem punahoyetv"])
         with patch.object(lemmatizer, "analyze", return_value=["bad analysis"]):
             with self.assertRaisesRegex(ValueError, "no recognized part of speech"):
                 lemmatize("word")
+
+    def test_exact_lemma_wins_over_longer_lemma(self):
+        with patch.object(lemmatizer, "analyze", return_value=[
+            "ometv+V+Present", "+Possessive3+omat+N", "omē+Adj",
+        ]):
+            self.assertEqual(lemmatize("OMAT"), ["omat"])
+
+    def test_equal_length_lemmas_keep_first_analysis(self):
+        with patch.object(lemmatizer, "analyze", return_value=[
+            "palen+Num", "other+N",
+        ]):
+            self.assertEqual(lemmatize("pale"), ["palen"])
+        with patch.object(lemmatizer, "analyze", return_value=[
+            "abc+N", "aę̄c+N",
+        ]):
+            self.assertEqual(lemmatize("word"), ["abc"])

@@ -17,8 +17,10 @@ analyses = analyze("punvttv")       # includes "ponvttv+N"
 lemmas = lemmatize("nere")         # ["nerē"]
 ```
 
-`analyze()` returns a list of HFST analysis strings and `lemmatize()` returns
-all distinct base lemmas.
+`analyze()` returns a list of HFST analysis strings. `lemmatize()` returns a
+list containing at most one base lemma, or an empty list if no analysis is
+found. It prefers a case-insensitive exact match, then the longest lemma;
+ties retain the first analysis.
 
 **Lemmatization**
 

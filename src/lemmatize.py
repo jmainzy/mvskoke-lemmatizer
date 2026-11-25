@@ -3,6 +3,7 @@
 import argparse
 import csv
 from pathlib import Path
+import unicodedata
 
 if __package__:
     from .analyze import analyze
@@ -16,7 +17,7 @@ PARTS_OF_SPEECH = {
 
 
 def lemmatize(word, *, fuzzy=True):
-    """Return all distinct dictionary lemmas for a word or phrase."""
+    """Return at most one lemma, preferring an exact match, then the longest."""
     lemmas = []
     for analysis in analyze(word, fuzzy=fuzzy):
         parts = analysis.split("+")
@@ -26,7 +27,17 @@ def lemmatize(word, *, fuzzy=True):
                 break
         else:
             raise ValueError(f"analysis has no recognized part of speech: {analysis!r}")
-    return list(dict.fromkeys(lemmas))
+    if not lemmas:
+        return []
+    normalized_word = unicodedata.normalize("NFC", word).lower()
+    best = max(
+        lemmas,
+        key=lambda lemma: (
+            unicodedata.normalize("NFC", lemma).lower() == normalized_word,
+            sum(not unicodedata.combining(char) for char in unicodedata.normalize("NFC", lemma)),
+        ),
+    )
+    return [best]
 
 def read_lines(filename):
     with open(filename, "r", encoding="utf-8") as f:
